@@ -41,4 +41,4 @@ for pergunta in perguntas:
     print()
 
 print(f"Total de acertos: {acertos}")
-print(f"Total de erros: {erros}")
+print(f"Total de erros: {erros}") 
