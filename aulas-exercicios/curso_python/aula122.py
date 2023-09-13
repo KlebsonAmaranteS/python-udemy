@@ -10,54 +10,54 @@
 # refazer = todo ['fazer café', 'caminhar']
 # from os import system
 
-from os import system
+# from os import system
 
-tarefas = []
-elementos = []
-historico_desfazer = []
+# tarefas = []
+# elementos = []
+# historico_desfazer = []
 
-while True:
+# while True:
     
-    user = input("Comandos: listar, desfazer, refazer\nDigite uma tarefa ou comando: ")
+#     user = input("Comandos: listar, desfazer, refazer\nDigite uma tarefa ou comando: ")
 
-    if user == "listar":
-        print()
-        print("TAREFAS:")
-        for tarefa in tarefas:
-            print(f"{tarefa}")
-        print()
-    elif user == "desfazer":
-        if tarefas:
-            print()
-            elemento_apagado = tarefas.pop()
-            elementos.append(elemento_apagado)
-            historico_desfazer.append(elemento_apagado)
-            print("TAREFAS:")
-            for tarefa in tarefas:
-                print(f"{tarefa}")
-            print()
-        if not tarefas:
-            print()
-            print("NADA A DESFAZER")
-            print()
-    elif user == "refazer":
-        if historico_desfazer:
-            tarefa_refazer = historico_desfazer.pop()
-            tarefas.append(tarefa_refazer)
-            print()
-            print("TAREFAS:")
-            for tarefa in tarefas:
-                print(f"{tarefa}")
-            print()
-    elif user == "clear":
-        system('cls')
-    else:
-        print()
-        tarefas.append(user)
-        print("TAREFAS:")
-        for tarefa in tarefas:
-            print(f"{tarefa}")
-        print() 
+#     if user == "listar":
+#         print()
+#         print("TAREFAS:")
+#         for tarefa in tarefas:
+#             print(f"{tarefa}")
+#         print()
+#     elif user == "desfazer":
+#         if tarefas:
+#             print()
+#             elemento_apagado = tarefas.pop()
+#             elementos.append(elemento_apagado)
+#             historico_desfazer.append(elemento_apagado)
+#             print("TAREFAS:")
+#             for tarefa in tarefas:
+#                 print(f"{tarefa}")
+#             print()
+#         if not tarefas:
+#             print()
+#             print("NADA A DESFAZER")
+#             print()
+#     elif user == "refazer":
+#         if historico_desfazer:
+#             tarefa_refazer = historico_desfazer.pop()
+#             tarefas.append(tarefa_refazer)
+#             print()
+#             print("TAREFAS:")
+#             for tarefa in tarefas:
+#                 print(f"{tarefa}")
+#             print()
+#     elif user == "clear":
+#         system('cls')
+#     else:
+#         print()
+#         tarefas.append(user)
+#         print("TAREFAS:")
+#         for tarefa in tarefas:
+#             print(f"{tarefa}")
+#         print() 
         
 # CÓDIGO VERSÃO DA AULA
 
@@ -136,3 +136,112 @@ while True:
         adicionar(tarefa, tarefas)
         listar(tarefas)
         continue'''
+        
+
+
+import os
+import json
+
+def listar(tarefas):
+    print()
+    if not tarefas:
+        print('Nenhuma tarefa para listar')
+        return
+
+    print('Tarefas:')
+    for tarefa in tarefas:
+        print(f'\t{tarefa}')
+    print()
+
+
+def desfazer(tarefas, tarefas_refazer):
+    print()
+    if not tarefas:
+        print('Nenhuma tarefa para desfazer')
+        return
+
+    tarefa = tarefas.pop()
+    print(f'{tarefa=} removida da lista de tarefas.')
+    tarefas_refazer.append(tarefa)
+    print()
+    listar(tarefas)
+
+
+def refazer(tarefas, tarefas_refazer):
+    print()
+    if not tarefas_refazer:
+        print('Nenhuma tarefa para refazer')
+        return
+
+    tarefa = tarefas_refazer.pop()
+    print(f'{tarefa=} adicionada na lista de tarefas.')
+    tarefas.append(tarefa)
+    print()
+    listar(tarefas)
+
+
+def adicionar(tarefa, tarefas):
+    print()
+    tarefa = tarefa.strip()
+    if not tarefa:
+        print('Você não digitou uma tarefa.')
+        return
+    print(f'{tarefa=} adicionada na lista de tarefas.')
+    tarefas.append(tarefa)
+    print()
+    listar(tarefas)
+
+def ler(tarefas, caminho_arquivo):
+    dados = []
+    try:
+        with open(caminho_arquivo, 'r', encoding='utf8') as arquivo:
+            dados = json.load(arquivo)
+    except FileNotFoundError:
+        print('Arquivo não existe')
+        salvar(tarefas, caminho_arquivo)
+    return dados
+        
+def salvar(tarefas, caminho_arquivo):
+    with open(caminho_arquivo, 'w', encoding='utf8') as arquivo:
+        dados = json.dump(tarefas, arquivo, indent=2, ensure_ascii=False)
+    return dados
+    
+    
+CAMINHO_ARQUIVO = "aula122.json"  
+tarefas = ler([], CAMINHO_ARQUIVO)
+tarefas_refazer = []
+
+while True:
+    print('Comandos: listar, desfazer e refazer')
+    tarefa = input('Digite uma tarefa ou comando: ')
+
+    comandos = {
+        'listar': lambda: listar(tarefas),
+        'desfazer': lambda: desfazer(tarefas, tarefas_refazer),
+        'refazer': lambda: refazer(tarefas, tarefas_refazer),
+        'clear': lambda: os.system('clear'),
+        'adicionar': lambda: adicionar(tarefa, tarefas),
+    }
+    comando = comandos.get(tarefa) if comandos.get(tarefa) is not None else \
+        comandos['adicionar']
+    comando()
+    salvar(tarefas, CAMINHO_ARQUIVO)
+    
+    # if tarefa == 'listar':
+    #     listar(tarefas)
+    #     continue
+    # elif tarefa == 'desfazer':
+    #     desfazer(tarefas, tarefas_refazer)
+    #     listar(tarefas)
+    #     continue
+    # elif tarefa == 'refazer':
+    #     refazer(tarefas, tarefas_refazer)
+    #     listar(tarefas)
+    #     continue
+    # elif tarefa == 'clear':
+    #     os.system('clear')
+    #     continue
+    # else:
+    #     adicionar(tarefa, tarefas)
+    #     listar(tarefas)
+    #     continue
