@@ -4,21 +4,26 @@ i = 0
 qtd_apareceu_mais_vezes = 0
 letra_apareceu_mais_vezes = ''
 while i < len(frase):
-    letra_atual = frase[i]
+     letra_atual = frase[i]
     
-    if letra_atual == ' ':
-        i+= 1
-        continue
+     if letra_atual == ' ':
+         i+= 1
+         continue
       
     
-    qtd_apareceu_mais_vezes_atual = frase.count(letra_atual)
+     qtd_apareceu_mais_vezes_atual = frase.count(letra_atual)
     
-    if qtd_apareceu_mais_vezes < qtd_apareceu_mais_vezes_atual:
-        qtd_apareceu_mais_vezes = qtd_apareceu_mais_vezes_atual
-        letra_apareceu_mais_vezes = letra_atual
+     if qtd_apareceu_mais_vezes < qtd_apareceu_mais_vezes_atual:
+         qtd_apareceu_mais_vezes = qtd_apareceu_mais_vezes_atual
+         letra_apareceu_mais_vezes = letra_atual
     
-    i+= 1
+     i+= 1
     
 print(f'A letra que apareceu mais vezes foi: "{letra_apareceu_mais_vezes}" que apareceu {qtd_apareceu_mais_vezes}x')
-    
+
+# frase = 'Flamengo foi mal esse ano!'
+
+# letra_Atual = 'o'
+# qtd_vezes = frase.count(letra_Atual);   
+# print(qtd_vezes) 
  
