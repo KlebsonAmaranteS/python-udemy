@@ -8,7 +8,7 @@ Conta (ABC)
     ContaPoupanca
 Pessoa (ABC)
     Cliente
-        Clente -> Conta
+        Cliente -> Conta
 Banco
     Banco -> Cliente
     Banco -> Conta
@@ -32,4 +32,8 @@ Só será possível sacar se passar na autenticação do banco (descrita acima)
 Banco autentica por um método.
 """
 
- 
+import contas
+
+
+def teste(testando):
+    ...
